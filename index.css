@@ -62,3 +62,18 @@ body {
 input:focus::placeholder {
   color: transparent;
 }
+
+
+table {
+    border: none
+
+}
+
+#last_pair {
+  position: absolute;
+  width: 50%;
+  top: 1%;
+  left: 45%;
+  color: #484545;
+  font-family: 'Raleway', sans-serif;
+}

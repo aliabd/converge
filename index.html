@@ -9,6 +9,14 @@
   </head>
   <body>
     <div id="container">
+      <div id="last_pair">
+        <table cellspacing="50px" cellpadding="0">
+          <tr>
+            <th><span id="last_user_word"></span></th>
+            <th><span id="last_ai_word"></span></th>
+          </tr>
+        </table>
+      </div>
       <div id="chat">
         <center>
           <input type="text" class="user-textbox" id="user-textbox" placeholder="Try a random word..." onkeypress="get_word(this)">
