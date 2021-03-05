@@ -12,8 +12,8 @@ body {
 
 .user-textbox, .ai-textbox {
   width:200px;
-	height:35px;
-	border-radius:4px;
+  height:35px;
+  border-radius:4px;
   transition-property:background-color,border-radius,width,height,color;
   transition-duration:0.215s;
   transition-delay: 0.215s;
@@ -26,6 +26,7 @@ body {
   background-color:transparent;
   border-color: transparent;
   outline: none;
+  font-weight: normal;
 }
 
 .user-textbox {
