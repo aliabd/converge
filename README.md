@@ -1,3 +1,2 @@
-# Convergence
+### let's [converge](https://abidlabs.github.io/convergence/)!
 
-let's [converge](https://abidlabs.github.io/convergence/)!
