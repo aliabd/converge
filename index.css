@@ -2,6 +2,17 @@ body {
   background-color: #fdf2ee;
 }
 
+.navbar.transparent.navbar-inverse .navbar-inner {
+  background: rgba(0,0,0,0.4);
+}
+
+.pink{
+  color: #f13474;
+}
+.bold{
+  font-weight: bold;
+}
+
 #chat {
   position: absolute;
   width: 33%;

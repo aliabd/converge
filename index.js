@@ -38,3 +38,16 @@ function get_word(input) {
     }
 }
 
+// Create a new word2vec method
+const wordVectors = ml5.word2vec("wordvecs5000.json", modelLoaded);
+
+// When the model is loaded
+function modelLoaded() {
+  console.log("Model Loaded!");
+}
+
+// Find the closest word to 'rainbow'
+wordVectors.nearest("rainbow", function(err, results) {
+  console.log(results);
+});
+
