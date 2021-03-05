@@ -2,17 +2,13 @@ body {
   background-color: #fdf2ee;
 }
 
-#container {
-  position: relative;
-  height: 300px;
-}
-
 #chat {
   position: absolute;
-  width: 50%;
-  bottom: 10px;
-  left: 150px;
+  width: 33%;
+  bottom: 10%;
+  left: 40%;
 }
+
 
 .user-textbox, .ai-textbox {
   width:200px;
