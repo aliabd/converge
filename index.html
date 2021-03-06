@@ -30,7 +30,7 @@
           </tr>
         </table>
       </div>
-      <div class="plot" style="height: 400px;">
+      <div class="plot">
         <canvas id="canvas" style="width:100%;height:100%;"></canvas>
       </div>
       <div id="chat">
@@ -49,10 +49,10 @@
           </tbody>
         </table>
         <center>
-          <input type="text" class="user-textbox" id="user-textbox" placeholder="type a random word" onkeypress="submit_word(this)">
+          <input type="text" class="user-textbox" id="user-textbox" placeholder="" onkeypress="submit_word(this)" readonly>
         </center>
         <center>
-          <input class="ai-textbox" id="ai-textbox" placeholder="the browser will guess here..." readonly>
+          <input class="ai-textbox" id="ai-textbox" placeholder="" readonly>
         </center>
       </div>
     </div>
