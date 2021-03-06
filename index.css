@@ -34,6 +34,46 @@ body {
   left: 40%;
 }
 
+.usertable.table.table-borderless {
+  font-size: 10px;
+  position: absolute;
+  width: 20%;
+  left: 10px;
+  bottom: 60px;
+}
+
+.aitable.table.table-borderless {
+  font-size: 10px;
+  position: absolute;
+  width: 20%;
+  left: 260px;
+  bottom: 15px;
+}
+
+#thirduser {
+    color: #d8d8d8;
+}
+
+#seconduser {
+    color: #9e9e9e;
+}
+
+#firstuser {
+    color: #616161;
+}
+
+#thirdai {
+    color: #d8d8d8;
+}
+
+#secondai {
+    color: #9e9e9e;
+}
+
+#firstai {
+    color: #616161;
+}
+
 
 .user-textbox, .ai-textbox {
   width:200px;

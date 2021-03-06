@@ -75,6 +75,25 @@ function converged(userWord, aiWord) {
     }
 }
 
+function updateLastWords(previousUserWords, previousAIWords) {
+    if (previousUserWords.length == 1 ) {
+        $('#firstuser').html(previousUserWords[0])
+        $('#firstai').html(root2word[previousAIWords[0]])
+    } else if (previousUserWords.length == 2 ) {
+        $('#firstuser').html(previousUserWords[previousUserWords.length-1])
+        $('#firstai').html(root2word[previousAIWords[previousUserWords.length-1]])
+        $('#seconduser').html(previousUserWords[previousUserWords.length-2])
+        $('#secondai').html(root2word[previousAIWords[previousUserWords.length-2]])
+    } else {
+        $('#firstuser').html(previousUserWords[previousUserWords.length-1])
+        $('#firstai').html(root2word[previousAIWords[previousUserWords.length-1]])
+        $('#seconduser').html(previousUserWords[previousUserWords.length-2])
+        $('#secondai').html(root2word[previousAIWords[previousUserWords.length-2]])
+        $('#thirduser').html(previousUserWords[previousUserWords.length-3])
+        $('#thirdai').html(root2word[previousAIWords[previousUserWords.length-3]])
+    }
+}
+
 function addDataToChart(user_x, user_y, ai_x, ai_y) {
     embedding_chart.data.datasets[0].data.push({'x': user_x, 'y': user_y})
     embedding_chart.data.datasets[1].data.push({'x': ai_x, 'y': ai_y})
@@ -105,8 +124,9 @@ function submit_word(input) {
             let aiWord = get_first_ai_word()
             display_ai_guess(aiWord);
             firstTurn = false;
-            previousAIWords.push(stemmer(aiWord));
-            previousUserWords.push(stemmer(userWord));
+            previousAIWords.push(aiWord);
+            previousUserWords.push(userWord);
+            updateLastWords(previousUserWords, previousAIWords)
             converged(userWord, aiWord);
             user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
             ai_embedding = Array.from(smallWordVectors["model"][stemmer(aiWord)].dataSync())
@@ -117,8 +137,9 @@ function submit_word(input) {
                 let aiWord = getDifferentWord(aiWords)
                 console.log(aiWord)
                 display_ai_guess(root2word[aiWord]);
-                previousAIWords.push(stemmer(aiWord));
-                previousUserWords.push(stemmer(userWord));
+                previousAIWords.push(aiWord);
+                previousUserWords.push(userWord);
+                updateLastWords(previousUserWords, previousAIWords)
                 converged(userWord, aiWord);
                 user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
                 ai_embedding = Array.from(smallWordVectors["model"][aiWord].dataSync())
