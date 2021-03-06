@@ -93,7 +93,6 @@ function get_word(input) {
 }
 
 
-
 // Create a new word2vec method
 const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/new_wordvecs10000.json", modelLoaded);
 
@@ -113,6 +112,40 @@ function get_first_ai_word(){
 function get_root(word) {
     return stemmer(word)
 }
+
+
+$( document ).ready(function() {
+    let ctx = $('#canvas')[0].getContext('2d');
+    embedding_chart = new Chart(ctx, {
+      type: 'scatter',
+      data: {
+          datasets: [{
+            label: 'User Embedding',
+            data: [{'x': 1, 'y': 0.2}, {'x': 0.3, 'y': 4}],
+            backgroundColor: 'rgb(0, 0, 0)',
+            borderColor: 'rgb(0, 0, 0)',
+            pointRadius: 13,
+            pointHoverRadius: 13,
+            pointStyle: 'rectRot',
+            showLine: true,
+            fill: false,
+          }, {
+            label: 'AI Embedding',
+            data: [{'x': -1, 'y': -0.2}, {'x': -0.3, 'y': -4}],
+            backgroundColor: 'rgb(0, 0, 0)',
+            borderColor: 'rgb(0, 0, 0)',
+            pointRadius: 13,
+            pointHoverRadius: 13,
+            pointStyle: 'rectRot',
+            showLine: true,
+            fill: false,
+          }]
+      },
+      options: {
+        legend: {display: false}
+      }
+    });    
+})
 
 
 // Porter stemmer in Javascript. Few comments, but it's easy to follow against the rules in the original
