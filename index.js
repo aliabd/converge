@@ -58,6 +58,8 @@ function getDifferentWord(wordList){
         }
         if (!same_root) {
             break
+        } else {
+            console.log("was going to guess: " + word)
         }
     }
     return word;
