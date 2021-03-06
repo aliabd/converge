@@ -16,7 +16,7 @@ function display_ai_guess(word) {
 
 function invalid_word() {
     us_tb.style.color = 'red';
-    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 500);
+    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 1000);
 }
 
 function hide_words() {
