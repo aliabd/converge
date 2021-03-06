@@ -71,6 +71,14 @@ function converged(userWord, aiWord) {
 function addDataToChart(user_x, user_y, ai_x, ai_y) {
     embedding_chart.data.datasets[0].data.push({'x': user_x, 'y': user_y})
     embedding_chart.data.datasets[1].data.push({'x': ai_x, 'y': ai_y})
+    if (embedding_chart.data.datasets[2].data.length > 0) {
+        embedding_chart.data.datasets[2].data.pop()
+    }
+    if (embedding_chart.data.datasets[3].data.length > 0) {
+        embedding_chart.data.datasets[3].data.pop()
+    }
+    embedding_chart.data.datasets[2].data.push({'x': user_x, 'y': user_y})
+    embedding_chart.data.datasets[3].data.push({'x': ai_x, 'y': ai_y})
     embedding_chart.update();
 }
 
@@ -80,14 +88,15 @@ function submit_word(input) {
         let userWord =$('#user-textbox').val();
         us_tb.value = userWord;
         if (firstTurn) {
+            setUpGraph();
             get_first_ai_word().then(aiWord => {
                 display_ai_guess(root2word[aiWord]);
                 firstTurn = false;
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
                 converged(userWord, aiWord);
-                user_embedding = Array.from(wordVectors["model"][userWord].dataSync())
-                ai_embedding = Array.from(wordVectors["model"][aiWord].dataSync())
+                user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
+                ai_embedding = Array.from(smallWordVectors["model"][aiWord].dataSync())
                 addDataToChart(user_embedding[0], user_embedding[1], ai_embedding[0], ai_embedding[1]);
             })    
         } else {
@@ -98,8 +107,8 @@ function submit_word(input) {
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
                 converged(userWord, aiWord);
-                user_embedding = Array.from(wordVectors["model"][userWord].dataSync())
-                ai_embedding = Array.from(wordVectors["model"][aiWord].dataSync())
+                user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
+                ai_embedding = Array.from(smallWordVectors["model"][aiWord].dataSync())
                 addDataToChart(user_embedding[0], user_embedding[1], ai_embedding[0], ai_embedding[1]);
             })
         }
@@ -108,7 +117,8 @@ function submit_word(input) {
 
 
 // Create a new word2vec method
-const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/wordvecs10000.json", modelLoaded);
+const smallWordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/new_wordvecs10000.json");
+const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/stemmed_wordvecs10000.json", modelLoaded);
 
 // When the model is loaded
 function modelLoaded() {
@@ -127,8 +137,69 @@ function get_root(word) {
     return stemmer(word)
 }
 
+function drawCircle(context, xPos, yPos, radius, color)
+{
+   //B1. PARAMETERS for shadow and angles.
+   var startAngle        = (Math.PI/180)*0;
+   var endAngle          = (Math.PI/180)*360;
+   context.shadowColor   = "gray";
+   context.shadowOffsetX = 0;
+   context.shadowOffsetY = 0;
+   context.shadowBlur    = 0;
 
-$( document ).ready(function() {
+   //B2. DRAW CIRCLE
+   context.beginPath();
+   context.arc(xPos, yPos, radius, 
+               startAngle, endAngle, false);
+   context.fillStyle = color;
+   context.fill();              
+}
+
+
+$(document).ready(function(){
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+        
+    // Set display size (css pixels).
+    var width = 1800;
+    var height = 600
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+
+    // Set actual size in memory (scaled to account for extra pixel density).
+    var scale = window.devicePixelRatio; // <--- Change to 1 on retina screens to see blurry canvas.
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+
+    // Normalize coordinate system to use css pixels.
+    ctx.scale(scale, scale);
+
+    let context = $('#canvas')[0].getContext('2d');
+   
+    var numCircles = 800;
+    var maxRadius  = 4;
+    var minRadius  = 4;
+    var colors     = ["#cac8c8"];
+    var numColors  =  colors.length;
+
+    // A3. CREATE circles.
+    for(var n=0; n<numCircles; n++)
+    {
+        // A4. RANDOM values for circle characteristics.
+        var xPos       =  Math.random()*canvas.width;
+        var yPos       =  Math.random()*canvas.height;
+        var radius     =  minRadius+(Math.random()*(maxRadius-minRadius));
+        var colorIndex =  Math.random()*(numColors-1);
+        colorIndex     =  Math.round(colorIndex);
+        var color      =  colors[colorIndex];
+
+        // A5. DRAW circle.
+        drawCircle(context, xPos, yPos, radius, color);
+    }
+})
+
+function setUpGraph() {
     let ctx = $('#canvas')[0].getContext('2d');
     embedding_chart = new Chart(ctx, {
       type: 'scatter',
@@ -140,13 +211,33 @@ $( document ).ready(function() {
             data: [],
             backgroundColor: '#f13474',
             borderColor: '#f13474',
+            pointRadius: 2,
+            pointHoverRadius: 2,
+            pointStyle: 'circle',
+            showLine: true,
+            fill: false,
+          }, {
+            label: 'AI Embedding',
+            data: [],
+            backgroundColor: '#a5a2a2',
+            borderColor: '#a5a2a2',
+            pointRadius: 2,
+            pointHoverRadius: 2,
+            pointStyle: 'circle',
+            showLine: true,
+            fill: false,
+          }, {
+            label: 'Final User Embedding',
+            data: [],
+            backgroundColor: '#f13474',
+            borderColor: '#f13474',
             pointRadius: 6,
             pointHoverRadius: 6,
             pointStyle: 'circle',
             showLine: true,
             fill: false,
           }, {
-            label: 'AI Embedding',
+            label: 'Final AI Embedding',
             data: [],
             backgroundColor: '#a5a2a2',
             borderColor: '#a5a2a2',
@@ -158,6 +249,14 @@ $( document ).ready(function() {
           }]
       },
       options: {
+        layout: {
+            padding: {
+              top: 5,
+              bottom: 5,
+              right: 5,
+              left: 5
+            }
+        },        
         tooltips: false,
         legend: {display: false},
         scales: {
@@ -176,7 +275,7 @@ $( document ).ready(function() {
         }    
       },
     });    
-})
+}
 
 
 // Porter stemmer in Javascript. Few comments, but it's easy to follow against the rules in the original
