@@ -2,6 +2,10 @@ body {
   background-color: #fdf2ee;
 }
 
+#congrats {
+    display: none;
+}
+
 .navbar.transparent.navbar-inverse .navbar-inner {
   background: rgba(0,0,0,0.4);
 }

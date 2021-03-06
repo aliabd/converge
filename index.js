@@ -98,6 +98,15 @@ function similarity(s1, s2) {
     return costs[s2.length];
     }
 
+function converged(userWord, aiWord) {
+    if (userWord == aiWord) {
+        confetti.start();
+        $('#congrats').css('display','block');
+        $('#convergedword').innerHTML = userWord;
+        setTimeout(() => {$('#convergedword').html(userWord);}, 200);
+        setTimeout(() => {confetti.stop();}, 3000);
+    }
+}
 
 function get_word(input) {
     if(event.key === 'Enter') {
@@ -110,6 +119,7 @@ function get_word(input) {
                 firstTurn = false;
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
+                converged(userWord, aiWord)
             })    
         } else {
             let n = previousUserWords.length-1
@@ -119,10 +129,13 @@ function get_word(input) {
                 display_ai_guess(aiWord);
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
+                converged(userWord, aiWord);
             })
         }
     }
 }
+
+
 
 // Create a new word2vec method
 const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/wordvecs5000.json", modelLoaded);
