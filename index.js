@@ -41,8 +41,8 @@ function last_pair(user_word, ai_word) {
 
 function getDifferentWord(wordList){
     let word;
-    let same_root = false;
     for (var i=0; i<wordList.length; i++){
+        let same_root = false;
         word = wordList[i]["word"];
         for (var j=0; j<previousUserWords.length; j++) {
             if (stemmer(word) == stemmer(previousUserWords[j])) {
@@ -105,8 +105,8 @@ function submit_word(input) {
             let aiWord = get_first_ai_word()
             display_ai_guess(aiWord);
             firstTurn = false;
-            previousAIWords.push(aiWord);
-            previousUserWords.push(userWord);
+            previousAIWords.push(stemmer(aiWord));
+            previousUserWords.push(stemmer(userWord));
             converged(userWord, aiWord);
             user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
             ai_embedding = Array.from(smallWordVectors["model"][stemmer(aiWord)].dataSync())
@@ -117,8 +117,8 @@ function submit_word(input) {
                 let aiWord = getDifferentWord(aiWords)
                 console.log(aiWord)
                 display_ai_guess(root2word[aiWord]);
-                previousAIWords.push(aiWord);
-                previousUserWords.push(userWord);
+                previousAIWords.push(stemmer(aiWord));
+                previousUserWords.push(stemmer(userWord));
                 converged(userWord, aiWord);
                 user_embedding = Array.from(smallWordVectors["model"][stemmer(userWord)].dataSync())
                 ai_embedding = Array.from(smallWordVectors["model"][aiWord].dataSync())
