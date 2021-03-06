@@ -9,11 +9,11 @@ var previousUserWords = [];
 var previousAIWords = [];
 
 function display_ai_guess(word) {
-    if word in root2word {
-        ai_tb.value = root2word[word];
-    } else {
-        ai_tb.value = word;
-    }
+//    if (word in root2word) {
+//        ai_tb.value = root2word[word];
+//    } else {
+    ai_tb.value = word;
+//    }
     bold();
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
@@ -126,7 +126,7 @@ function submit_word(input) {
             setUpGraph();
             $('#user-textbox').attr("placeholder", "type next word")
             let aiWord = get_first_ai_word()
-            display_ai_guess(aiWord);
+            display_ai_guess(root2word[aiWord]);
             firstTurn = false;
             previousAIWords.push(aiWord);
             previousUserWords.push(userWord);
