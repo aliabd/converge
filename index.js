@@ -9,7 +9,7 @@ var previousUserWords = [];
 var previousAIWords = [];
 
 function display_ai_guess(word) {
-    ai_tb.value = word;
+    ai_tb.value = root2word[word];
     bold();
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
