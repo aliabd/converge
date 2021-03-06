@@ -14,6 +14,11 @@ function display_ai_guess(word) {
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
 
+function invalid_word() {
+    us_tb.style.color = 'red';
+    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 2000);
+}
+
 function hide_words() {
     ai_tb.value = "";
     us_tb.value = "";
@@ -78,6 +83,11 @@ function addDataToChart(user_x, user_y, ai_x, ai_y) {
 function submit_word(input) {
     if(event.key === 'Enter') {
         let userWord =$('#user-textbox').val();
+        if (!(get_root(userWord) in wordVectors["model"])) {
+            console.log("We don't recognize '" + userWord + "'");
+            invalid_word()
+            return null;
+        }
         us_tb.value = userWord;
         if (firstTurn) {
             get_first_ai_word().then(aiWord => {
@@ -99,7 +109,7 @@ function submit_word(input) {
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
                 converged(userWord, aiWord);
-                user_embedding = Array.from(wordVectors["model"][userWord].dataSync())
+                user_embedding = Array.from(wordVectors["model"][get_root(userWord)].dataSync())
                 ai_embedding = Array.from(wordVectors["model"][aiWord].dataSync())
                 addDataToChart(user_embedding[0], user_embedding[1], ai_embedding[0], ai_embedding[1]);
             })
