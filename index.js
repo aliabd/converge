@@ -35,96 +35,53 @@ function last_pair(user_word, ai_word) {
 
 function getDifferentWord(wordList){
     let word;
-    console.log(wordList.length)
+    let same_root = false;
     for (var i=0; i<wordList.length; i++){
-        let maxSimilarity = 0;
-        console.log(wordList[i]["word"]);
-        word = get_root(wordList[i]["word"]);
-        console.log(word)
+        word = wordList[i]["word"];
         for (var j=0; j<previousUserWords.length; j++) {
-            s = similarity(previousUserWords[j], word)
-            maxSimilarity = Math.max(s, maxSimilarity)
+            if (get_root(word) == get_root(previousUserWords[j])) {
+                same_root = true;
+                break
+            }
         }
         for (var j=0; j<previousAIWords.length; j++) {
-            s = similarity(previousAIWords[j], word)
-            maxSimilarity = Math.max(s, maxSimilarity)
+            if (get_root(word) == get_root(previousAIWords[j])) {
+                same_root = true;
+                break
+            }
         }
-        console.log(word, "maxSimilarity", maxSimilarity)
-        if (maxSimilarity < 0.8) {
+        if (!same_root) {
             break
         }
     }
     return word;
 }
 
-function similarity(s1, s2) {
-    var longer = s1;
-    var shorter = s2;
-    if (s1.length < s2.length) {
-        longer = s2;
-        shorter = s1;
-    }
-    var longerLength = longer.length;
-    if (longerLength == 0) {
-        return 1.0;
-    }
-    return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-    }
-
-    function editDistance(s1, s2) {
-    s1 = s1.toLowerCase();
-    s2 = s2.toLowerCase();
-
-    var costs = new Array();
-    for (var i = 0; i <= s1.length; i++) {
-        var lastValue = i;
-        for (var j = 0; j <= s2.length; j++) {
-        if (i == 0)
-            costs[j] = j;
-        else {
-            if (j > 0) {
-            var newValue = costs[j - 1];
-            if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                newValue = Math.min(Math.min(newValue, lastValue),
-                costs[j]) + 1;
-            costs[j - 1] = lastValue;
-            lastValue = newValue;
-            }
-        }
-        }
-        if (i > 0)
-        costs[s2.length] = lastValue;
-    }
-    return costs[s2.length];
-    }
 
 function converged(userWord, aiWord) {
-    if (userWord == aiWord) {
+    if (get_root(userWord) == get_root(aiWord)) {
         confetti.start();
         $('#congrats').css('display','block');
-        $('#convergedword').innerHTML = userWord;
-        setTimeout(() => {$('#convergedword').html(userWord);}, 200);
-        setTimeout(() => {confetti.stop();}, 3000);
+        $('#convergedword').html(userWord);
+        setTimeout(() => {confetti.stop(); }, 5000);
     }
 }
 
 function get_word(input) {
     if(event.key === 'Enter') {
-        let userWord = get_root($('#user-textbox').val());
+        let userWord =$('#user-textbox').val();
         us_tb.value = userWord;
         if (firstTurn) {
             get_first_ai_word().then(aiWord => {
-                aiWord = get_root(aiWord);
                 display_ai_guess(aiWord);
                 firstTurn = false;
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
-                converged(userWord, aiWord)
+                converged(userWord, aiWord);
             })    
         } else {
             let n = previousUserWords.length-1
             wordVectors.average([previousUserWords[n], previousAIWords[n]]).then(aiWords =>{
-                console.log(aiWords)
                 let aiWord = getDifferentWord(aiWords)
                 display_ai_guess(aiWord);
                 previousAIWords.push(aiWord);
@@ -153,7 +110,6 @@ function get_first_ai_word(){
     return wordVectors.getRandomWord();
 }
 
-// function get_center_word(user_word, )
 function get_root(word) {
     return stemmer(word)
 }
