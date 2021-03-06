@@ -14,6 +14,11 @@ function display_ai_guess(word) {
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
 
+function invalid_word() {
+    us_tb.style.color = 'red';
+    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 2000);
+}
+
 function hide_words() {
     ai_tb.value = "";
     us_tb.value = "";
@@ -40,19 +45,21 @@ function getDifferentWord(wordList){
     for (var i=0; i<wordList.length; i++){
         word = wordList[i]["word"];
         for (var j=0; j<previousUserWords.length; j++) {
-            if (get_root(word) == get_root(previousUserWords[j])) {
+            if (stemmer(word) == stemmer(previousUserWords[j])) {
                 same_root = true;
                 break
             }
         }
         for (var j=0; j<previousAIWords.length; j++) {
-            if (get_root(word) == previousAIWords[j]) {
+            if (stemmer(word) == previousAIWords[j]) {
                 same_root = true;
                 break
             }
         }
         if (!same_root) {
             break
+        } else {
+            console.log("was going to guess: " + word)
         }
     }
     return word;
@@ -60,7 +67,7 @@ function getDifferentWord(wordList){
 
 
 function converged(userWord, aiWord) {
-    if (get_root(userWord) == get_root(aiWord)) {
+    if (stemmer(userWord) == stemmer(aiWord)) {
         confetti.start();
         $('#congrats').css('display','block');
         $('#convergedword').html(userWord);
@@ -86,6 +93,11 @@ function addDataToChart(user_x, user_y, ai_x, ai_y) {
 function submit_word(input) {
     if(event.key === 'Enter') {
         let userWord =$('#user-textbox').val();
+        if (!(stemmer(userWord) in wordVectors["model"])) {
+            console.log("We don't recognize '" + userWord + "'");
+            invalid_word()
+            return null;
+        }
         us_tb.value = userWord;
         if (firstTurn) {
             setUpGraph();
@@ -101,8 +113,9 @@ function submit_word(input) {
             })    
         } else {
             let n = previousUserWords.length-1
-            wordVectors.average([get_root(previousUserWords[n]), previousAIWords[n]]).then(aiWords =>{
+            wordVectors.average([stemmer(previousUserWords[n]), previousAIWords[n]]).then(aiWords =>{
                 let aiWord = getDifferentWord(aiWords)
+                console.log(aiWord)
                 display_ai_guess(root2word[aiWord]);
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
@@ -131,10 +144,6 @@ function modelLoaded() {
 
 function get_first_ai_word(){
     return wordVectors.getRandomWord();
-}
-
-function get_root(word) {
-    return stemmer(word)
 }
 
 function drawCircle(context, xPos, yPos, radius, color)
