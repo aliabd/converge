@@ -231,7 +231,7 @@ $(document).ready(function(){
 })
 
 function setUpGraph() {
-    let ctx = $('#bg_canvas')[0].getContext('2d');
+    let ctx = $('#canvas')[0].getContext('2d');
     embedding_chart = new Chart(ctx, {
       type: 'scatter',
       responsive:true,
