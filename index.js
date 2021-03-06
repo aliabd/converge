@@ -208,7 +208,7 @@ $(document).ready(function(){
 
     let context = $('#canvas')[0].getContext('2d');
    
-    var numCircles = 800;
+    var numCircles = 1800;
     var maxRadius  = 4;
     var minRadius  = 4;
     var colors     = ["#cac8c8"];
@@ -231,7 +231,7 @@ $(document).ready(function(){
 })
 
 function setUpGraph() {
-    let ctx = $('#canvas')[0].getContext('2d');
+    let ctx = $('#bg_canvas')[0].getContext('2d');
     embedding_chart = new Chart(ctx, {
       type: 'scatter',
       responsive:true,

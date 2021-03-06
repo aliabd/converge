@@ -54,6 +54,12 @@ body {
     color: #d8d8d8;
 }
 
+canvas{
+  position: absolute;
+  top: 40px;
+  left: 0;
+}
+
 #seconduser {
     color: #9e9e9e;
 }
