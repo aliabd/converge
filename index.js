@@ -9,7 +9,11 @@ var previousUserWords = [];
 var previousAIWords = [];
 
 function display_ai_guess(word) {
-    ai_tb.value = root2word[word];
+    if word in root2word {
+        ai_tb.value = root2word[word];
+    } else {
+        ai_tb.value = word;
+    }
     bold();
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
