@@ -208,7 +208,7 @@ $(document).ready(function(){
 
     let context = $('#canvas')[0].getContext('2d');
    
-    var numCircles = 800;
+    var numCircles = 1800;
     var maxRadius  = 4;
     var minRadius  = 4;
     var colors     = ["#cac8c8"];
