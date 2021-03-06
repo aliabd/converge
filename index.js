@@ -118,6 +118,8 @@ $( document ).ready(function() {
     let ctx = $('#canvas')[0].getContext('2d');
     embedding_chart = new Chart(ctx, {
       type: 'scatter',
+      responsive:true,
+      maintainAspectRatio: false,  
       data: {
           datasets: [{
             label: 'User Embedding',
