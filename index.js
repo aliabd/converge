@@ -138,7 +138,7 @@ function get_word(input) {
 
 
 // Create a new word2vec method
-const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/wordvecs5000.json", modelLoaded);
+const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/new_wordvecs5000.json", modelLoaded);
 
 // When the model is loaded
 function modelLoaded() {
