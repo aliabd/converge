@@ -68,7 +68,14 @@ function converged(userWord, aiWord) {
     }
 }
 
-function get_word(input) {
+function addDataToChart(user_x, user_y, ai_x, ai_y) {
+    embedding_chart.data.datasets[0].data.push({'x': user_x, 'y': user_y})
+    embedding_chart.data.datasets[1].data.push({'x': ai_x, 'y': ai_y})
+    embedding_chart.update();
+}
+
+
+function submit_word(input) {
     if(event.key === 'Enter') {
         let userWord =$('#user-textbox').val();
         us_tb.value = userWord;
@@ -79,6 +86,9 @@ function get_word(input) {
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
                 converged(userWord, aiWord);
+                user_embedding = Array.from(wordVectors["model"][userWord].dataSync())
+                ai_embedding = Array.from(wordVectors["model"][aiWord].dataSync())
+                addDataToChart(user_embedding[0], user_embedding[1], ai_embedding[0], ai_embedding[1]);
             })    
         } else {
             let n = previousUserWords.length-1
@@ -89,6 +99,9 @@ function get_word(input) {
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
                 converged(userWord, aiWord);
+                user_embedding = Array.from(wordVectors["model"][userWord].dataSync())
+                ai_embedding = Array.from(wordVectors["model"][aiWord].dataSync())
+                addDataToChart(user_embedding[0], user_embedding[1], ai_embedding[0], ai_embedding[1]);
             })
         }
     }
@@ -96,7 +109,7 @@ function get_word(input) {
 
 
 // Create a new word2vec method
-const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/new_wordvecs10000.json", modelLoaded);
+const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/wordvecs10000.json", modelLoaded);
 
 // When the model is loaded
 function modelLoaded() {
@@ -125,29 +138,44 @@ $( document ).ready(function() {
       data: {
           datasets: [{
             label: 'User Embedding',
-            data: [{'x': 1, 'y': 0.2}, {'x': 0.3, 'y': 4}],
-            backgroundColor: 'rgb(0, 0, 0)',
-            borderColor: 'rgb(0, 0, 0)',
-            pointRadius: 13,
-            pointHoverRadius: 13,
-            pointStyle: 'rectRot',
+            data: [],
+            backgroundColor: '#f13474',
+            borderColor: '#f13474',
+            pointRadius: 6,
+            pointHoverRadius: 6,
+            pointStyle: 'circle',
             showLine: true,
             fill: false,
           }, {
             label: 'AI Embedding',
-            data: [{'x': -1, 'y': -0.2}, {'x': -0.3, 'y': -4}],
-            backgroundColor: 'rgb(0, 0, 0)',
-            borderColor: 'rgb(0, 0, 0)',
-            pointRadius: 13,
-            pointHoverRadius: 13,
-            pointStyle: 'rectRot',
+            data: [],
+            backgroundColor: '#a5a2a2',
+            borderColor: '#a5a2a2',
+            pointRadius: 6,
+            pointHoverRadius: 6,
+            pointStyle: 'circle',
             showLine: true,
             fill: false,
           }]
       },
       options: {
-        legend: {display: false}
-      }
+        tooltips: false,
+        legend: {display: false},
+        scales: {
+            xAxes: [{
+                display : false,
+                gridLines: {
+                    drawOnChartArea: false
+                }
+            }],
+            yAxes: [{
+                display : false,
+                gridLines: {
+                    drawOnChartArea: false
+                }
+            }]
+        }    
+      },
     });    
 })
 
