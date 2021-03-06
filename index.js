@@ -9,14 +9,14 @@ var previousUserWords = [];
 var previousAIWords = [];
 
 function display_ai_guess(word) {
-    ai_tb.value = word;
+    ai_tb.value = root2word[word];
     bold();
     setTimeout(() => { hide_words(); unbold();}, 2000);
 }
 
 function invalid_word() {
     us_tb.style.color = 'red';
-    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 2000);
+    setTimeout(() => { hide_words(); us_tb.style.fontWeight = null; us_tb.style.color = null;}, 1000);
 }
 
 function hide_words() {
