@@ -84,6 +84,7 @@ function get_word(input) {
             let n = previousUserWords.length-1
             wordVectors.average([get_root(previousUserWords[n]), previousAIWords[n]]).then(aiWords =>{
                 let aiWord = getDifferentWord(aiWords)
+                console.log(aiWord)
                 display_ai_guess(root2word[aiWord]);
                 previousAIWords.push(aiWord);
                 previousUserWords.push(userWord);
