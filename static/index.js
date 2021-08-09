@@ -155,8 +155,8 @@ function submit_word(input) {
 
 
 // Create a new word2vec method
-const smallWordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/new_wordvecs10000.json");
-const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/stemmed_wordvecs10000.json", modelLoaded);
+const smallWordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/word_embedding/new_wordvecs10000.json");
+const wordVectors = ml5.word2vec("https://raw.githubusercontent.com/abidlabs/convergence/main/word_embedding/stemmed_wordvecs10000.json", modelLoaded);
 
 // When the model is loaded
 function modelLoaded() {
